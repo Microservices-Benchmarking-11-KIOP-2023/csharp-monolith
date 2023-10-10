@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Pb.Common.Models;
 using Pb.Geo.Service.Models;
 

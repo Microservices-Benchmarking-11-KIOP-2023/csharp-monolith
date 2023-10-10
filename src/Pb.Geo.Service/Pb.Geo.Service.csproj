@@ -1,31 +1,27 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <UserSecretsId>b51963a4-ae0d-4312-82fb-ddac429c56bf</UserSecretsId>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Grpc.AspNetCore" Version="2.49.0" />
-        <PackageReference Include="Grpc.Tools" Version="2.56.2">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="7.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
     
     <ItemGroup>
-        <Content Include="..\..\.dockerignore">
-            <Link>.dockerignore</Link>
-        </Content>
+      <ProjectReference Include="..\Pb.Common\Pb.Common.csproj" />
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\Pb.Common\Pb.Common.csproj" />
+      <None Remove="Properties\launchSettings.json" />
     </ItemGroup>
 
 </Project>

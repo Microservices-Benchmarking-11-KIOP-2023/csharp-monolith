@@ -1,27 +1,29 @@
-using Pb.Common.Clients;
+using Microsoft.Extensions.Logging;
 using Pb.Common.Models;
+using Pb.Geo.Service.Services;
+using Pb.Rate.Service.Services;
 
 namespace Pb.Search.Service.Services;
 
 public interface ISearchService
 {
-    public Task<SearchResult?> Nearby(NearbyRequest request);
+    public SearchResult? Nearby(NearbyRequest request);
 }
 
 public class SearchService : ISearchService
 {
     private readonly ILogger<SearchService> _log;
-    private readonly IGeoClient _geoClient;
-    private readonly IRateClient _rateClient;
+    private readonly IGeoService _geoService;
+    private readonly IRateService _rateService;
 
-    public SearchService(ILogger<SearchService> log, IGeoClient geoClient, IRateClient rateClient)
+    public SearchService(ILogger<SearchService> log, IGeoService geoClient, IRateService rateClient)
     {
         _log = log;
-        _geoClient = geoClient ?? throw new NullReferenceException("Geo client was not specified. You need to do that before you proceed");
-        _rateClient = rateClient ?? throw new NullReferenceException("Rate client was not specified. You need to do that before you proceed");;
+        _geoService = geoClient ?? throw new NullReferenceException("Geo service was not specified. You need to do that before you proceed");
+        _rateService = rateClient ?? throw new NullReferenceException("Rate service was not specified. You need to do that before you proceed");;
     }
 
-    public async Task<SearchResult?> Nearby(NearbyRequest request)
+    public SearchResult? Nearby(NearbyRequest request)
     {
         try
         {
@@ -30,7 +32,7 @@ public class SearchService : ISearchService
             _log.LogInformation("Trying to call Geo service...");
 #endif
 
-            var nearbyHotels = await _geoClient.GetNearbyHotelsAsync(new GeoRequest()
+            var nearbyHotels = _geoService.Nearby(new GeoRequest()
             {
                 Lat = request.Lat,
                 Lon = request.Lon
@@ -41,7 +43,7 @@ public class SearchService : ISearchService
             _log.LogInformation("Trying to call Geo service...");
 #endif
 
-            var hotelRates = await _rateClient.GetRatesAsync(new RateRequest()
+            var hotelRates = _rateService.GetRates(new RateRequest()
             {
                 HotelIds = nearbyHotels?.HotelIds,
                 InDate = request.InDate,

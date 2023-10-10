@@ -1,22 +1,23 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <UserSecretsId>cdd37882-50b6-455e-86a9-5850b9bc4962</UserSecretsId>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
     
     <ItemGroup>
-      <Content Include="..\..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+      <ProjectReference Include="..\Pb.Common\Pb.Common.csproj" />
+      <ProjectReference Include="..\Pb.Geo.Service\Pb.Geo.Service.csproj" />
+      <ProjectReference Include="..\Pb.Rate.Service\Pb.Rate.Service.csproj" />
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\..\Pb.Common\Pb.Common.csproj" />
-      <ProjectReference Include="..\Pb.Common\Pb.Common.csproj" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
     </ItemGroup>
-
+    
 </Project>

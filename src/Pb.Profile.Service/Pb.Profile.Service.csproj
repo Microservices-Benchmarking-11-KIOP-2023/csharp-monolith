@@ -1,30 +1,30 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <UserSecretsId>449844e2-7746-4444-be8d-ca152a9d766a</UserSecretsId>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
-
+    
     <ItemGroup>
-        <Content Include="..\..\.dockerignore">
-            <Link>.dockerignore</Link>
-        </Content>
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
     </ItemGroup>
-
+    
     <ItemGroup>
-        <Folder Include="Data\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\Pb.Common\Pb.Common.csproj" />
       <ProjectReference Include="..\Pb.Common\Pb.Common.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <None Remove="Properties\launchSettings.json" />
     </ItemGroup>
 
 </Project>

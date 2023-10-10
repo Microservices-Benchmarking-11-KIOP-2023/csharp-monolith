@@ -1,9 +1,0 @@
-POST http://localhost:5208/geo/nearby
-Content-Type: application/json
-
-{
-  "Lat": 37.7867012,
-  "Lon": -122.411201
-}
-
-###

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Pb.Common.Models;
 using Pb.Rate.Service.Loaders;
 
@@ -42,8 +43,11 @@ public class RateService : IRateService
 
         foreach (var ratePlan in ratePlans)
         {
-            var stay = (ratePlan.HotelId, ratePlan.InDate, ratePlan.OutDate);
-
+            var stay = (ratePlan.HotelId ?? "", ratePlan.InDate ?? "", ratePlan.OutDate ?? "");
+            
+            if (stay is ("", "", ""))
+                continue;
+            
             if (rateTable.TryGetValue(stay, out var existingRatePlans))
                 existingRatePlans.Add(ratePlan);
             else

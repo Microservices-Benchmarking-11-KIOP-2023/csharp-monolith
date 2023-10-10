@@ -5,6 +5,10 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["src/Pb.ApiGateway/Pb.ApiGateway.csproj", "src/Pb.ApiGateway/"]
+COPY ["src/Pb.ApiGateway/Pb.Geo.csproj", "src/Pb.ApiGateway/"]
+COPY ["src/Pb.ApiGateway/Pb.Profile.Service.csproj", "src/Pb.ApiGateway/"]
+COPY ["src/Pb.ApiGateway/Pb.Search.Service.csproj", "src/Pb.ApiGateway/"]
+COPY ["src/Pb.ApiGateway/Pb.Rate.Service.csproj", "src/Pb.ApiGateway/"]
 COPY ["src/Pb.Common", "src/Pb.Common"]
 RUN dotnet restore "src/Pb.ApiGateway/Pb.ApiGateway.csproj"
 COPY . .

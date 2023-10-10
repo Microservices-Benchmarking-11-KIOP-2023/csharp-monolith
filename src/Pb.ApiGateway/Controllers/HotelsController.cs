@@ -4,20 +4,18 @@ using Pb.Common.Models;
 
 namespace Pb.ApiGateway.Controllers;
 
-public class HotelsController : Controller
+public class HotelsController : ControllerBase
 {
-    private readonly ILogger<HotelsController> _log;
     private readonly IHotelProvider _hotelProvider;
     
-    public HotelsController(ILogger<HotelsController> log, IHotelProvider hotelProvider)
+    public HotelsController(IHotelProvider hotelProvider)
     {
-        _log = log;
         _hotelProvider = hotelProvider;
     }
     
     [HttpGet("/hotels")]
-    public async Task<GeoJsonResponse?> FetchHotels([FromQuery] HotelParameters hotelParameters)
+    public GeoJsonResponse? FetchHotels([FromQuery] HotelParameters hotelParameters)
     {
-        return await _hotelProvider.FetchHotels(hotelParameters);
+        return _hotelProvider.FetchHotels(hotelParameters);
     }
 }

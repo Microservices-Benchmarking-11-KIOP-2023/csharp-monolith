@@ -1,5 +1,6 @@
-using Pb.Common.Clients;
 using Pb.Common.Models;
+using Pb.Profile.Service.Services;
+using Pb.Search.Service.Services;
 using GeoJsonResponse = Pb.Common.Models.GeoJsonResponse;
 using Hotel = Pb.Common.Models.Hotel;
 
@@ -7,33 +8,32 @@ namespace Pb.ApiGateway.Providers;
 
 public interface IHotelProvider
 {
-    Task<GeoJsonResponse?> FetchHotels(HotelParameters parameters);
+    GeoJsonResponse? FetchHotels(HotelParameters parameters);
 }
 
 public class HotelProvider : IHotelProvider
 {
     private readonly ILogger<HotelProvider> _log;
-    private readonly ISearchClient _searchClient;
-    private readonly IProfileClient _profileClient;
+    private readonly ISearchService _searchService;
+    private readonly IProfileService _profileService;
 
     public HotelProvider(
         ILogger<HotelProvider> log, 
-        IProfileClient profileClient,
-        ISearchClient searchClient)
+        IProfileService profileService,
+        ISearchService searchService)
     {
         _log = log;
-        _profileClient = profileClient;
-        _searchClient = searchClient;
+        _profileService = profileService;
+        _searchService = searchService;
     }
-
-    public async Task<GeoJsonResponse?> FetchHotels(HotelParameters parameters)
+    public GeoJsonResponse? FetchHotels(HotelParameters parameters)
     {
         _log.LogInformation("Checking parameters passed to fetch hotels");
         if (CheckParameters(parameters)) return null;
 
         try
         {
-            var searchResponse = await _searchClient.GetNearbyHotelsAsync(
+            var searchResponse = _searchService.Nearby(
                 new NearbyRequest
                 {
                     Lon = parameters.Lon!.Value,
@@ -44,7 +44,7 @@ public class HotelProvider : IHotelProvider
             
             _log.LogInformation("Successfully Retrieved nearby hotels from search service"); //Add to gRPC
 
-            var profileResponse = await _profileClient.GetProfilesAsync(
+            var profileResponse = _profileService.GetProfiles(
                 new ProfileRequest
                 {
                     HotelIds = searchResponse.HotelIds 

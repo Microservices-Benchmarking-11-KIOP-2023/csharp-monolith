@@ -5,28 +5,4 @@ services:
       context: .
     ports:
       - 5000:80
-    depends_on:
-      - search
-      - profile
-  search:
-    build: 
-      dockerfile: src/Pb.Search.Service/Dockerfile
-      context: .
-    depends_on:
-      - geo
-      - rate
-  profile:
-    image: ghcr.io/microservices-benchmarking-11-kiop-2023/csharp-profile-rest:latest
-    build:
-      dockerfile: src/Pb.Profile.Service/Dockerfile
-      context: .
-  geo:
-    image: ghcr.io/microservices-benchmarking-11-kiop-2023/csharp-geo-rest:latest
-    build:
-      dockerfile: src/Pb.Geo.Service/Dockerfile
-      context: .
-  rate:
-    image: ghcr.io/microservices-benchmarking-11-kiop-2023/csharp-rate-rest:latest
-    build:
-      dockerfile: src/Pb.Rate.Service/Dockerfile
-      context: .
+      
