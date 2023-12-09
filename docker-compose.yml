@@ -1,7 +1,8 @@
 services:
   gateway:
+    image: ghcr.io/microservices-benchmarking-11-kiop-2023/csharp-mono:latest
     build:
-      dockerfile: src/Pb.ApiGateway/Dockerfile
+      dockerfile: Dockerfile
       context: .
     ports:
       - 5000:80

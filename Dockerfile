@@ -5,10 +5,10 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["src/Pb.ApiGateway/Pb.ApiGateway.csproj", "src/Pb.ApiGateway/"]
-COPY ["src/Pb.ApiGateway/Pb.Geo.csproj", "src/Pb.ApiGateway/"]
-COPY ["src/Pb.ApiGateway/Pb.Profile.Service.csproj", "src/Pb.ApiGateway/"]
-COPY ["src/Pb.ApiGateway/Pb.Search.Service.csproj", "src/Pb.ApiGateway/"]
-COPY ["src/Pb.ApiGateway/Pb.Rate.Service.csproj", "src/Pb.ApiGateway/"]
+COPY ["src/Pb.Geo.Service/Pb.Geo.Service.csproj", "src/Pb.ApiGateway/"]
+COPY ["src/Pb.Profile.Service/Pb.Profile.Service.csproj", "src/Pb.ApiGateway/"]
+COPY ["src/Pb.Search.Service/Pb.Search.Service.csproj", "src/Pb.ApiGateway/"]
+COPY ["src/Pb.Rate.Service/Pb.Rate.Service.csproj", "src/Pb.ApiGateway/"]
 COPY ["src/Pb.Common", "src/Pb.Common"]
 COPY . .
 
