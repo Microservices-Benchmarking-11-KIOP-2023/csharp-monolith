@@ -10,8 +10,16 @@ COPY ["src/Pb.ApiGateway/Pb.Profile.Service.csproj", "src/Pb.ApiGateway/"]
 COPY ["src/Pb.ApiGateway/Pb.Search.Service.csproj", "src/Pb.ApiGateway/"]
 COPY ["src/Pb.ApiGateway/Pb.Rate.Service.csproj", "src/Pb.ApiGateway/"]
 COPY ["src/Pb.Common", "src/Pb.Common"]
-RUN dotnet restore "src/Pb.ApiGateway/Pb.ApiGateway.csproj"
 COPY . .
+
+RUN apt-get update && apt-get install -y unzip
+
+RUN unzip src/Pb.ApiGateway.Service/Data/inventory.zip -d src/Pb.ApiGateway.Service/Data
+RUN unzip src/Pb.ApiGateway.Service/Data/geo.zip -d src/Pb.ApiGateway.Service/Data
+RUN unzip src/Pb.ApiGateway.Service/Data/hotels.zip -d src/Pb.ApiGateway.Service/Data
+
+RUN dotnet restore "src/Pb.ApiGateway/Pb.Geo.Service.csproj"
+
 WORKDIR "/src/src/Pb.ApiGateway"
 RUN dotnet build "Pb.ApiGateway.csproj" -c Release -o /app/build
 
