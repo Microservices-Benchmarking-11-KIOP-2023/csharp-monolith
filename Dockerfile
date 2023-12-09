@@ -14,9 +14,9 @@ COPY . .
 
 RUN apt-get update && apt-get install -y unzip
 
-RUN unzip src/Pb.ApiGateway.Service/Data/inventory.zip -d src/Pb.ApiGateway.Service/Data
-RUN unzip src/Pb.ApiGateway.Service/Data/geo.zip -d src/Pb.ApiGateway.Service/Data
-RUN unzip src/Pb.ApiGateway.Service/Data/hotels.zip -d src/Pb.ApiGateway.Service/Data
+RUN unzip src/Pb.ApiGateway/Data/inventory.zip -d src/Pb.ApiGateway/Data
+RUN unzip src/Pb.ApiGateway/Data/geo.zip -d src/Pb.ApiGateway/Data
+RUN unzip src/Pb.ApiGateway/Data/hotels.zip -d src/Pb.ApiGateway/Data
 
 RUN dotnet restore "src/Pb.ApiGateway/Pb.Geo.Service.csproj"
 
