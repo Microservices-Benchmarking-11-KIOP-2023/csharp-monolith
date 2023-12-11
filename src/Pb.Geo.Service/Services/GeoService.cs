@@ -10,7 +10,6 @@ public interface IGeoService
 }
 public class GeoService : IGeoService
 {
-    private readonly ILogger<GeoService> _log;
     private readonly IEnumerable<Point> _points;
     private const int MaxSearchRadius = 10;
     private const double EarthRadius = 6371;
@@ -40,23 +39,24 @@ public class GeoService : IGeoService
     private IEnumerable<Point> GetNeighbors(Point point, IEnumerable<Point> points)
     {
         return points
-            .Select(p => new { Point = p, Distance = CalculateDistanceBetweenPoints(point, p) })
-            .Where(pointAndDistance => pointAndDistance.Distance <= Math.Pow(MaxSearchRadius, 2))
+            .Select(p => new { Point = p, Distance = CalculateDistanceBetweenPoints(p, point) })
+            .Where(pointAndDistance => pointAndDistance.Distance <= MaxSearchRadius)
             .OrderBy(pointAndDistance => pointAndDistance.Distance)
             .Select(pointAndDistance => pointAndDistance.Point);
     }
     
-    private double CalculateDistanceBetweenPoints(Point originPoint, Point destinationPoint)
+    private double CalculateDistanceBetweenPoints(Point p1, Point p2)
     {
-        var distanceLat = ToRadians(originPoint.Lat - destinationPoint.Lat);
-        var distanceLon = ToRadians(originPoint.Lon - originPoint.Lon);
+        double latDistance = ToRadians(p2.Lat - p1.Lat);
+        double lonDistance = ToRadians(p2.Lon - p1.Lon);
 
-        var inverseHaversine = Math.Pow(Math.Sin(distanceLat / 2), 2) +
-                Math.Cos(originPoint.Lat.Value) * Math.Cos(destinationPoint.Lat.Value) *
-                Math.Pow(Math.Sin(distanceLon / 2), 2);
-        var centralAngle = 2 * Math.Asin(Math.Sqrt(inverseHaversine));
+        double a = Math.Sin(latDistance / 2) * Math.Sin(latDistance / 2)
+                   + Math.Cos(ToRadians(p1.Lat)) * Math.Cos(ToRadians(p2.Lat))
+                                                      * Math.Sin(lonDistance / 2) * Math.Sin(lonDistance / 2);
 
-        return centralAngle * EarthRadius;
+        double centralAngle = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+
+        return EarthRadius * centralAngle;
     }
 
     static double ToRadians(float? degrees)
