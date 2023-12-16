@@ -13,24 +13,18 @@ public interface IHotelProvider
 
 public class HotelProvider : IHotelProvider
 {
-    private readonly ILogger<HotelProvider> _log;
     private readonly ISearchService _searchService;
     private readonly IProfileService _profileService;
 
     public HotelProvider(
-        ILogger<HotelProvider> log, 
         IProfileService profileService,
         ISearchService searchService)
     {
-        _log = log;
         _profileService = profileService;
         _searchService = searchService;
     }
     public GeoJsonResponse? FetchHotels(HotelParameters parameters)
     {
-        _log.LogInformation("Checking parameters passed to fetch hotels");
-        if (CheckParameters(parameters)) return null;
-
         try
         {
             var searchResponse = _searchService.Nearby(
@@ -42,27 +36,21 @@ public class HotelProvider : IHotelProvider
                     OutDate = parameters.OutDate
                 }) ?? throw new AggregateException();
             
-            _log.LogInformation("Successfully Retrieved nearby hotels from search service"); //Add to gRPC
-
             var profileResponse = _profileService.GetProfiles(
                 new ProfileRequest
                 {
                     HotelIds = searchResponse.HotelIds 
                 });
             
-            _log.LogInformation("Successfully Retrieved profiles from profile service"); //Add to gRPC
-            
             var hotels = CreateGeoJsonResponse(profileResponse.Hotels);
             return hotels;
         }
-        catch (AggregateException e) //Add to grpc
+        catch (AggregateException e)
         {
-            _log.LogError("One of gRPC services responded with Unavailable status code : {Exception}", e);
             return new GeoJsonResponse();
         }
         catch (Exception e)
         {
-            _log.LogError("Unknown exception: {Exception}", e);
             return new GeoJsonResponse();
         }
     }
@@ -105,14 +93,11 @@ public class HotelProvider : IHotelProvider
     {
         if (string.IsNullOrWhiteSpace(parameters.InDate) || string.IsNullOrWhiteSpace(parameters.OutDate))
         {
-            _log.LogError("Please specify proper inDate/outDate params");
             return true;
         }
 
         if (parameters is { Lon: not null, Lat: not null }) return false;
-
-        _log.LogError("Please specify proper lon/lat params");
-
+        
         return true;
     }
 }
